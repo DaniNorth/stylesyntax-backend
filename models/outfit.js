@@ -21,7 +21,7 @@ const outfitSchema = new mongoose.Schema({
   season: String,              // e.g. "Winter", "Spring"
   climateFit: String,          // e.g. "Tropical", "Cold"
 
-  creator: {
+  author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,

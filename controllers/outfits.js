@@ -1,17 +1,17 @@
 const express = require('express');
 const verifyToken = require('../middleware/verify-token');
-const Hoot = require('../models/hoot');
+const Outfit = require('../models/outfit');
 const router = express.Router();
 
-// POST /hoots - CREATE Route "Protected"
+// POST /outfits - CREATE Route "Protected"
 
 router.post('/', verifyToken, async (req, res) => {
     try {
         // add the logged-in user's id to the author field
         req.body.author = req.user._id;
-        const hoot = await Hoot.create(req.body);
-        hoot._doc.author = req.user
-        res.status(201).json(hoot);
+        const outfit = await Outfit.create(req.body);
+        outfit._doc.author = req.user
+        res.status(201).json(outfit);
     } catch (error) {
         console.log(error); // TODO: remove this before prod
         res.status(500).json({ error: error.message });
@@ -19,81 +19,81 @@ router.post('/', verifyToken, async (req, res) => {
 });
 
 
-// GET /hoots - READ Route "Protected"
+// GET /outfits - READ Route "Protected"
 router.get('/', verifyToken, async (req, res) => {
     try {
-        const hoots = await Hoot.find({})
+        const outfits = await Outfit.find({})
         .populate('author')
         .sort({createdAt: 'desc'});
-        res.status(200).json(hoots);
+        res.status(200).json(outfits);
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: error.message });
     }
 });
 
-// GET /hoots/:hootId READ Route "Protected"
-router.get('/:hootId', verifyToken, async (req, res) => {
+// GET /outfits/:outfitId READ Route "Protected"
+router.get('/:outfitId', verifyToken, async (req, res) => {
     try {
-        const hoot = await Hoot.findById(req.params.hootId)
+        const outfit = await Outfit.findById(req.params.outfitId)
         .populate(['author', 'comments.author']);
-        res.status(200).json(hoot);
+        res.status(200).json(outfit);
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: error.message });
     }
 });
 
-// PUT /hoots/:hootId UPDATE Route "Protected"
-router.put('/:hootId', verifyToken, async (req, res) => {
+// PUT /outfits/:outfitId UPDATE Route "Protected"
+router.put('/:outfitId', verifyToken, async (req, res) => {
     try {
-        const hoot = await Hoot.findById(req.params.hootId);
+        const outfit = await Outfit.findById(req.params.outfitId);
         // make sure request user and author are the same person
-        if(!hoot.author.equals(req.user._id)) { // if there are NOT equal
+        if(!outfit.author.equals(req.user._id)) { // if there are NOT equal
             return res.status(403).send('You\'re not allowed to do that!');
         }
 
-        const updatedHoot = await Hoot.findByIdAndUpdate(
-            req.params.hootId,
+        const updatedOutfit = await Outfit.findByIdAndUpdate(
+            req.params.outfitId,
             req.body,
             { new: true }
         );
 
         // {new: true } returns the document AFTER the update
-        updatedHoot._doc.author = req.user // a great alternative since we don't have .populate
-        res.status(200).json(updatedHoot);
+        updatedOutfit._doc.author = req.user // a great alternative since we don't have .populate
+        res.status(200).json(updatedOutfit);
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: error.message });
     }
 });
 
-// DELETE /hoots/:hootId DELETE Route "Protected"
-router.delete('/:hootId', verifyToken, async (req, res) => {
+// DELETE /outfits/:outfitId DELETE Route "Protected"
+router.delete('/:outfitId', verifyToken, async (req, res) => {
     try {
-        const hoot = await Hoot.findById(req.params.hootId);
+        const outfit = await Outfit.findById(req.params.outfitId);
 
-        if(!hoot.author.equals(req.user._id)) {
+        if(!outfit.author.equals(req.user._id)) {
             return res.status(403).send('You\'re not allowed to do that!');
         }
 
-        const deletedHoot = await Hoot.findByIdAndDelete(req.params.hootId);
-        res.status(200).json(deletedHoot);
+        const deletedOutfit = await Outfit.findByIdAndDelete(req.params.outfitId);
+        res.status(200).json(deletedOutfit);
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: error.message });
     }
 });
 
-// POST /hoots/:hootId/comments CREATE comment "protected"
-router.post('/:hootId/comments', verifyToken, async (req, res) => {
+// POST /outfits/:outfitId/comments CREATE comment "protected"
+router.post('/:outfitId/comments', verifyToken, async (req, res) => {
     try {
         req.body.author = req.user._id; // adding requesting user as author
-        const hoot = await Hoot.findById(req.params.hootId);
-        hoot.comments.push(req.body);
-        await hoot.save();
+        const outfit = await Outfit.findById(req.params.outfitId);
+        outfit.comments.push(req.body);
+        await outfit.save();
 
-        const newComment = hoot.comments[hoot.comments.length - 1]; // get most recent comment
+        const newComment = outfit.comments[outfit.comments.length - 1]; // get most recent comment
         newComment._doc.author = req.user; // add requesting user's details
 
         res.status(201).json(newComment);
