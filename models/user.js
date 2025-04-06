@@ -27,6 +27,12 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,// User.findById(userId).populate('pinnedOutfits')
     ref: 'Outfit',
   }],
+
+  folders: [{
+    type: mongoose.Schema.Types.ObjectId,// User.findById(userId).populate('pinnedOutfits')
+    ref: 'Folder',
+  }],
+
   followers: [{
     type: mongoose.Schema.Types.ObjectId,// User.findById(userId).populate('followers')
     ref: 'User',
