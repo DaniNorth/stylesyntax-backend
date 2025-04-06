@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
+const Folder = require('../models/folder');
 
 const saltRounds = 12;
 
@@ -20,6 +21,16 @@ router.post('/sign-up', async (req, res) => {
       email: req.body.email,
       hashedPassword: bcrypt.hashSync(req.body.password, saltRounds)
     });
+    
+    {/* gives every user a default folder that's called saved outfits */}
+    const savedFolder = await Folder.create({
+      title: 'Saved Outfits',
+      author: user._id,
+      outfits: [],
+    });
+
+    user.folders.push(savedFolder._id);
+    await user.save();
 
     const payload = { username: user.username, _id: user._id };
 
@@ -30,6 +41,8 @@ router.post('/sign-up', async (req, res) => {
     res.status(500).json({ err: err.message });
   }
 });
+
+
 
 router.post('/sign-in', async (req, res) => {
   try {
