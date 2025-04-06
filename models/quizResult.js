@@ -4,24 +4,48 @@ const mongoose = require('mongoose');
 
 
 const quizResultSchema = new mongoose.Schema({
- user: {
-   type: mongoose.Schema.Types.ObjectId, // Links to User
-   ref: 'User',
-   required: true,
-   unique: true // One quiz result per user
- },
- genderCategory: String, // (e.g. Male, Female, Nonbinary)
- styleProfile: String, // (e.g. Boho, Minimalist)
- lifestyleTags: [String], // (e.g. "athletic", "casual", "professional")
- climateRegion: String, // (e.g. temperate, tropical)
- seasonalPrefs: [String], // (e.g. summer, winter)
- fitPreference: String, // (e.g. fitted, oversized, relaxed)
- quizTakenAt: {
-   type: Date,
-   default: Date.now // The date and time the quiz was completed
- }
-});
+  user: {
+    type: mongoose.Schema.Types.ObjectId, // Links to User
+    ref: 'User',
+    required: true,
+    unique: true // One quiz result per user
+  },
+  
+  genderCategory: {
+    type: String,
+    enum: ['Male', 'Female', 'Nonbinary'],
+  },
 
+  styleProfile: {
+    type: String,
+    enum: ['Boho', 'Minimalist', 'Grunge', 'Preppy', 'Streetwear', 'Classic', 'Casual', 'Y2K', 'Chic'],
+  },
+
+  lifestyleTags: [{
+    type: String,
+    enum: ['Athletic', 'Professional', 'Casual', 'Event-ready', 'Outdoorsy', 'Loungewear'],
+  }],
+
+  climateRegion: {
+    type: String,
+    enum: ['Tropical', 'Temperate', 'Cold', 'Dry', 'Humid'],
+  },
+
+  seasonalPrefs: [{
+    type: String,
+    enum: ['Winter', 'Spring', 'Summer', 'Fall'],
+  }],
+
+  fitPreference: {
+    type: String,
+    enum: ['Fitted', 'Relaxed', 'Oversized'],
+  },
+
+  quizTakenAt: {
+    type: Date,
+    default: Date.now
+  }
+});
 
 module.exports = mongoose.model('QuizResult', quizResultSchema);
 
