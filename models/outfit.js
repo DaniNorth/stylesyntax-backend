@@ -7,9 +7,8 @@ const outfitSchema = new mongoose.Schema({
     required: true,
   },
 
-  imageId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'uploads.files',
+  imageUrl: {
+    type: String,
   },
 
   description: {
@@ -52,6 +51,11 @@ const outfitSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  
+  comments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Comment',
+  }],
 
   createdAt: {
     type: Date,
