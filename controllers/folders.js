@@ -49,6 +49,24 @@ router.post('/', verifyToken, async (req, res) => {
   }
 });
 
+// PATCH /folders/:id - updates the folder title
+router.patch('/:id', verifyToken, async (req, res) => {
+    try {
+      const folder = await Folder.findById(req.params.id);
+  
+      if (!folder || !folder.author.equals(req.user._id)) {
+        return res.status(403).json({ err: 'Not authorized to edit this folder' });
+      }
+  
+      folder.title = req.body.title || folder.title;
+      await folder.save();
+  
+      res.status(200).json(folder);
+    } catch (err) {
+      res.status(500).json({ err: err.message });
+    }
+  });
+
 // PATCH /folders/:id/add-outfit - add an outfit to a folder
 router.patch('/:id/add-outfit', verifyToken, async (req, res) => {
   try {
@@ -69,6 +87,7 @@ router.patch('/:id/add-outfit', verifyToken, async (req, res) => {
     res.status(500).json({ err: err.message });
   }
 });
+
 
 // DELETE /folders/:id - delete the folder
 router.delete('/:id', verifyToken, async (req, res) => {
