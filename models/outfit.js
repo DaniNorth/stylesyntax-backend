@@ -7,19 +7,45 @@ const outfitSchema = new mongoose.Schema({
     required: true,
   },
 
+  imageId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'uploads.files',
+  },
+
   description: {
     type: String,
     default: '',
   },
 
-  imageUrl: {
+  styleProfile: {
     type: String,
-    default: '',
+    enum: ['Boho', 'Minimalist', 'Grunge', 'Preppy', 'Streetwear', 'Classic', 'Casual', 'Y2K', 'Chic', 'Other'],
   },
 
-  tags: [String],              // e.g. ["Neutral", "Streetwear"]
-  season: String,              // e.g. "Winter", "Spring"
-  climateFit: String,          // e.g. "Tropical", "Cold"
+  lifestyleTags: [{
+    type: String,
+    enum: ['Athletic', 'Professional', 'Casual', 'Event-ready', 'Outdoorsy', 'Loungewear'],
+  }],
+
+  season: {
+    type: String,
+    enum: ['Winter', 'Spring', 'Summer', 'Fall'],
+  },
+
+  climateFit: {
+    type: String,
+    enum: ['Tropical', 'Temperate', 'Cold', 'Dry', 'Humid'],
+  },
+
+  fitPreference: {
+    type: String,
+    enum: ['Fitted', 'Relaxed', 'Oversized'],
+  },
+
+  genderCategory: {
+    type: String,
+    enum: ['Male', 'Female', 'Nonbinary', 'Unisex'],
+  },
 
   author: {
     type: mongoose.Schema.Types.ObjectId,
