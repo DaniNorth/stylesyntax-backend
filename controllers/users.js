@@ -24,7 +24,11 @@ router.get('/:userId', verifyToken, async (req, res) => {
     const user = await User.findById(req.params.userId)
       .populate('followers', 'username')
       .populate('following', 'username')
-      .populate('pinnedOutfits');
+      .populate('pinnedOutfits')
+      .populate({
+        path: 'folders',
+        populate: { path: 'outfits' }
+      });
 
     if (!user) {
       return res.status(404).json({ err: 'User not found.'});

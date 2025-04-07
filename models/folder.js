@@ -10,7 +10,7 @@ const folderSchema = new mongoose.Schema({
 
 
  // The user who owns this folder
- user: {
+ author: {
    type: mongoose.Schema.Types.ObjectId,
    ref: 'User',
    required: true,
