@@ -5,6 +5,8 @@ const User = require('../models/user');
 
 const verifyToken = require('../middleware/verify-token');
 
+const upload = require('../middleware/upload');
+
 router.get('/', verifyToken, async (req, res) => {
   try {
     const users = await User.find({}, "username");
@@ -98,6 +100,24 @@ router.post('/:id/unfollow', verifyToken, async (req, res) => {
       updatedUser 
     });
   } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+});
+
+//  Route so user can upload photos
+router.post('/:userId/upload-profile-pic', verifyToken, upload.single('image'), async (req, res) => {
+  try {
+    const imageUrl = req.file.path;  
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.userId,
+      { profileImg: imageUrl }, 
+      { new: true }
+    );
+
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ err: err.message });
   }
 });
