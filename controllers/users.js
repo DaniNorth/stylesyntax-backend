@@ -122,4 +122,18 @@ router.post('/:userId/upload-profile-pic', verifyToken, upload.single('image'), 
   }
 });
 
+// PUT /user/:userId UPDATE Route "Protected"
+router.put('/:userId', verifyToken, async (req, res) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.userId,
+      req.body,
+      { new: true }
+    );
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  };
+});
+
 module.exports = router;
