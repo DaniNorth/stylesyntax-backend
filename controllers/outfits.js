@@ -160,4 +160,51 @@ router.post('/:outfitId/comments', verifyToken, async (req, res) => {
         }
       });
 
+// PUT /outfits/:outfitId/comments/:commentId UPDATE comment "protected"
+router.put('/:outfitId/comments/:commentId', verifyToken, async (req, res) => {
+  try {
+    const comment = await Comment.findById(req.params.commentId);
+
+    if (!comment) return res.status(404).json({ error: 'Comment not found' });
+
+    if (!comment.author.equals(req.user._id)) {
+      return res.status(403).json({ error: 'Unauthorized' });
+    }
+
+    comment.content = req.body.content;
+    await comment.save();
+
+    await comment.populate('author');
+    res.status(200).json(comment);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// DELETE /outfits/:outfitId/comments/:commentId DELETE Comment "protected"
+router.delete('/:outfitId/comments/:commentId', verifyToken, async (req,res) => {
+  try {
+    const comment = await Comment.findById(req.params.commentId);
+
+    if (!comment) {
+      return res.status(404).json({ error: 'Comment not found' });
+    }
+
+    if (!comment.author.equals(req.user._id)) {
+      return res.status(403).json({ error: 'Unauthorized to delete this comment' });
+    }
+
+    await Outfit.findByIdAndUpdate(req.params.outfitId, {
+      $pull: { comments: comment._id }
+    });
+
+    await comment.deleteOne();
+
+    res.status(200).json({ message: 'Comment deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+});
 module.exports = router;
