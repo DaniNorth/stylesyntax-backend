@@ -10,7 +10,7 @@ const quizResultSchema = new mongoose.Schema({
     required: true,
     unique: true // One quiz result per user
   },
-  
+
   genderCategory: {
     type: String,
     enum: ['Male', 'Female', 'Nonbinary'],
@@ -24,16 +24,6 @@ const quizResultSchema = new mongoose.Schema({
   lifestyleTags: [{
     type: String,
     enum: ['Athletic', 'Professional', 'Casual', 'Event-ready', 'Outdoorsy', 'Loungewear'],
-  }],
-
-  climateRegion: {
-    type: String,
-    enum: ['Tropical', 'Temperate', 'Cold', 'Dry', 'Humid'],
-  },
-
-  seasonalPrefs: [{
-    type: String,
-    enum: ['Winter', 'Spring', 'Summer', 'Fall'],
   }],
 
   fitPreference: {
