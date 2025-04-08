@@ -9,7 +9,7 @@ const upload = require('../middleware/upload');
 
 router.get('/', verifyToken, async (req, res) => {
   try {
-    const users = await User.find({}, "username");
+    const users = await User.find({}, "username profileImg followers");
 
     res.json(users);
   } catch (err) {
@@ -19,13 +19,10 @@ router.get('/', verifyToken, async (req, res) => {
 
 router.get('/:userId', verifyToken, async (req, res) => {
   try {
-    if (req.user._id !== req.params.userId){
-      return res.status(403).json({ err: "Unauthorized"});
-    }
-
-    const user = await User.findById(req.params.userId)
-      .populate('followers', 'username')
-      .populate('following', 'username')
+    
+      const user = await User.findById(req.params.userId)
+      .populate('followers', 'username profileImg')
+      .populate('following', 'username profileImg')
       .populate('pinnedOutfits')
       .populate({
         path: 'folders',
@@ -107,6 +104,11 @@ router.post('/:id/unfollow', verifyToken, async (req, res) => {
 //  Route so user can upload photos
 router.post('/:userId/upload-profile-pic', verifyToken, upload.single('image'), async (req, res) => {
   try {
+
+    if(!req.file) {
+      return res.status(400).json({ err: 'No file uploaded' })
+    }
+
     const imageUrl = req.file.path;  
 
     const updatedUser = await User.findByIdAndUpdate(
