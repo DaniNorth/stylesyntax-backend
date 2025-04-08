@@ -104,6 +104,11 @@ router.post('/:id/unfollow', verifyToken, async (req, res) => {
 //  Route so user can upload photos
 router.post('/:userId/upload-profile-pic', verifyToken, upload.single('image'), async (req, res) => {
   try {
+
+    if(!req.file) {
+      return res.status(400).json({ err: 'No file uploaded' })
+    }
+
     const imageUrl = req.file.path;  
 
     const updatedUser = await User.findByIdAndUpdate(
