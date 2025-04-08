@@ -49,11 +49,11 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  quizResults: {
-    type: mongoose.Schema.Types.ObjectId,// User.findById(userId).populate('quizResults')
+  quizResults: [{
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'QuizResults'
-    //TODO: Can the user take multiple quizzes? or just one
-  },
+  }],  
+  
   isAdmin: {
     type: Boolean,
     default: false
