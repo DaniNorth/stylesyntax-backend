@@ -18,7 +18,7 @@ const quizResultSchema = new mongoose.Schema({
 
   styleProfile: {
     type: String,
-    enum: ['Boho', 'Minimalist', 'Grunge', 'Preppy', 'Streetwear', 'Classic', 'Casual', 'Y2K', 'Chic'],
+    enum: ['Boho', 'Minimalist', 'Grunge/edgy', 'Preppy', 'Streetwear', 'Classic', 'Casual', 'retro', 'Coder', 'Avant-Garde', 'ecclectic/artsy', 'other'],
   },
 
   lifestyleTags: [{
