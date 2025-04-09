@@ -13,6 +13,7 @@ const testJwtRouter = require('./controllers/test-jwt');
 const usersRouter = require('./controllers/users');
 const outfitsRouter = require('./controllers/outfits');
 const foldersRouter = require('./controllers/folders');
+const quizRouter = require('./controllers/quiz');
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI);
@@ -33,6 +34,7 @@ app.use('/users', usersRouter);
 app.use('/outfits', outfitsRouter);
 app.use('/uploads', express.static('uploads'));
 app.use('/folders', foldersRouter);
+app.use('/quiz', quizRouter);
 
 // Start the server and listen on port 3000
 app.listen(3000, () => {

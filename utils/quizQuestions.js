@@ -102,7 +102,18 @@ const quizQuestions = {
           "make a bold fashion statement"
         ]
       },
-  
+      
+      q11_f: {
+        text: "Which shoes do you gravitate towards the most?",
+        type: "single",
+        options: [
+          "Ankle boots",
+          "Sneakers",
+          "Heels",
+          "Slides or sandals"
+        ]
+    },
+    
     // mens section
     q6_m: {
       text: "What fit do you prefer?",
@@ -133,6 +144,17 @@ const quizQuestions = {
       type: "single",
       options: ["bomber jacket", "trench coat", "hoodie", "denim jacket"]
     },
+
+    q11_m: {
+        text: "What’s your go-to pants style?",
+        type: "single",
+        options: [
+          "Tailored trousers",
+          "Jeans",
+          "Joggers or sweats",
+          "Cargo pants"
+        ]
+      },
   
     // nonbinary section
     q6_n: {

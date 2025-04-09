@@ -1,11 +1,13 @@
 const express = require('express');
+const verifyToken = require('../middleware/verify-token');
 const router = express.Router();
+
 const User = require('../models/user');
-const QuizResult = require('../models/quizResults');
-const { quizQuestions } = require('../utils/quizQuestions'); 
+const QuizResult = require('../models/quizResult');
+const { quizQuestions } = require('../utils/quizQuestions');
 const { quizTagMap } = require('../utils/quizTagMap');
 
-//filter quiz by gender prefrence
+// filter quiz based off the gender that user identifies as
 router.get('/questions', (req, res) => {
   const gender = req.query.gender;
 
@@ -25,7 +27,7 @@ router.get('/questions', (req, res) => {
   res.json({ questions: filteredQuestions });
 });
 
-// 🧠 Scoring logic
+// score the quiz results
 function calculateQuizResult(userAnswers) {
   const result = {
     genderCategory: null,
@@ -50,7 +52,7 @@ function calculateQuizResult(userAnswers) {
     });
   }
 
-  const topStyle = Object.entries(result.styleProfileCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || "other";
+  const topStyle = Object.entries(result.styleProfileCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'other';
   const lifestyleTags = Object.entries(result.lifestyleTagCounts)
     .sort((a, b) => b[1] - a[1])
     .map(([tag]) => tag);
@@ -63,25 +65,25 @@ function calculateQuizResult(userAnswers) {
   };
 }
 
-// ✅ Submit and save quiz results
-router.post('/submit', async (req, res) => {
+// submit and save the results to user
+router.post('/submit', verifyToken, async (req, res) => {
   try {
     const userId = req.user._id;
     const quizAnswers = req.body.answers;
 
     const resultData = calculateQuizResult(quizAnswers);
 
-    const newResult = await QuizResult.findOneAndUpdate(
+    const updatedResult = await QuizResult.findOneAndUpdate(
       { user: userId },
       { ...resultData, user: userId, quizTakenAt: new Date() },
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 
-    await User.findByIdAndUpdate(userId, { quizResults: newResult._id });
+    await User.findByIdAndUpdate(userId, { quizResults: updatedResult._id });
 
-    res.json({ success: true, quizResults: newResult });
+    res.json({ success: true, quizResults: updatedResult });
   } catch (err) {
-    console.error(err);
+    console.error('Quiz submission error:', err);
     res.status(500).json({ success: false, error: 'Quiz submission failed.' });
   }
 });
