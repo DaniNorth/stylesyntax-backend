@@ -14,6 +14,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  bio: {
+    type: String,
+  },
   hashedPassword: {
     type: String,
     required: true,
@@ -27,20 +30,16 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,// User.findById(userId).populate('pinnedOutfits')
     ref: 'Outfit',
   }],
-
   folders: [{
     type: mongoose.Schema.Types.ObjectId,// User.findById(userId).populate('pinnedOutfits')
     ref: 'Folder',
   }],
-
   followers: [{
     type: mongoose.Schema.Types.ObjectId,// User.findById(userId).populate('followers')
     ref: 'User',
       //TODO: Follower Count?
       //TODO: How to handle duplicate followers?
   }],
-
-
   following: [{
     type: mongoose.Schema.Types.ObjectId,// const user = await User.findById(userId).populate('following');
     ref: 'User',
@@ -50,12 +49,11 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  quizResults: {
-    type: mongoose.Schema.Types.ObjectId,// User.findById(userId).populate('quizResults')
+  quizResults: [{
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'QuizResults'
-    //TODO: Can the user take multiple quizzes? or just one
-  },
-
+  }],  
+  
   isAdmin: {
     type: Boolean,
     default: false
