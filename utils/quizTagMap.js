@@ -1,7 +1,8 @@
-export const quizTagMap = {
+const quizTagMap = {
+
     q1: {
-      "male": { genderCategory: "Male" },
-      "female": { genderCategory: "Female" },
+      "Male": { genderCategory: "Male" },
+      "Female": { genderCategory: "Female" },
       "Nonbinary": { genderCategory: "Nonbinary" },
     },
   
@@ -36,7 +37,7 @@ export const quizTagMap = {
       "vintage jacket": { styleProfile: ["Retro"] },
     },
   
-    // Female Specific
+    // For the girls
     q6_f: {
       "Scarf": { lifestyleTags: ["Loungewear"] },
       "beanie": { lifestyleTags: ["Casual"] },
@@ -73,8 +74,15 @@ export const quizTagMap = {
       "be comfortable yet stylish": { styleProfile: ["Casual"] },
       "make a bold fashion statement": { styleProfile: ["Grunge/edgy"] },
     },
+
+    q11_f: {
+      "Ankle boots": { styleProfile: ["Boho", "Grunge/edgy"] },
+      "Sneakers": { lifestyleTags: ["Athletic", "Casual"] },
+      "Heels": { lifestyleTags: ["Event-ready"], styleProfile: ["Classic"] },
+      "Slides or sandals": { lifestyleTags: ["Loungewear", "Casual"] }
+    },
   
-    // Male Specific
+    // For the boys
     q6_m: {
       "slim": { fitPreference: "Fitted" },
       "regular": { fitPreference: "Relaxed" },
@@ -106,8 +114,15 @@ export const quizTagMap = {
       "hoodie": { styleProfile: ["Casual"] },
       "denim jacket": { styleProfile: ["Retro"] },
     },
+
+    q11_m: {
+      "Tailored trousers": { styleProfile: ["Classic", "Professional"] },
+      "Jeans": { styleProfile: ["Casual"] },
+      "Joggers or sweats": { lifestyleTags: ["Loungewear"], styleProfile: ["Casual"] },
+      "Cargo pants": { lifestyleTags: ["Outdoorsy"], styleProfile: ["Grunge/edgy"] }
+    },    
   
-    // Androgynous Specific
+    // For nonbinary
     q6_n: {
       "slim": { fitPreference: "Fitted" },
       "regular": { fitPreference: "Relaxed" },
