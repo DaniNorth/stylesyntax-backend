@@ -1,4 +1,3 @@
-// models/outfit.js
 const mongoose = require('mongoose');
 
 const outfitSchema = new mongoose.Schema({
