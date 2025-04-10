@@ -23,7 +23,10 @@ mongoose.connection.on('connected', () => {
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'https://your-site-name.netlify.app',
+  credentials: true, 
+}));
 app.use(express.json());
 app.use(logger('dev'));
 
