@@ -9,8 +9,6 @@ const Comment = require('../models/comment');
 const cloudinary = require('cloudinary').v2;
 
 
-// POST /outfits - CREATE Route "Protected"
-
 router.post('/', verifyToken, upload.single('image'), async (req, res) => {
     try {
       req.body.author = req.user._id;
@@ -28,8 +26,7 @@ router.post('/', verifyToken, upload.single('image'), async (req, res) => {
     }
   });
 
-  // GET /outfits - READ Route "Protected"
-
+  
   router.get('/', verifyToken, async (req, res) => {
     try {
       const outfits = await Outfit.find({})
@@ -46,7 +43,7 @@ router.post('/', verifyToken, upload.single('image'), async (req, res) => {
     }
   });
 
-// GET /outfits/:outfitId - READ Route "Protected"
+
 router.get('/:outfitId', verifyToken, async (req, res) => {
     try {
       const outfit = await Outfit.findById(req.params.outfitId)
@@ -63,18 +60,16 @@ router.get('/:outfitId', verifyToken, async (req, res) => {
     }
   });
 
-// PUT /outfits/:outfitId UPDATE Route "Protected"
+
 router.put('/:outfitId', verifyToken, upload.single('image'), async (req, res) => {
     try {
       const outfit = await Outfit.findById(req.params.outfitId);  
-        // make sure request user and author are the same person
-        if (!outfit.author.equals(req.user._id)) { // if there are NOT equal
+                if (!outfit.author.equals(req.user._id)) { 
             return res.status(403).send('You\'re not allowed to do that!');
         }
 
         if (req.file && req.file.path) {
             req.body.imageUrl = req.file.path;
-            // Delete the old image that was previously uploaded
             if (outfit.imageId) {
               try {
                 await gfs.remove({ _id: outfit.imageId, root: 'uploads' });
@@ -83,7 +78,6 @@ router.put('/:outfitId', verifyToken, upload.single('image'), async (req, res) =
               }
             }
       
-            // Give the new image an id 
             req.body.imageId = req.file.id;
             req.body.imageUrl = req.file.path;
         }
@@ -102,7 +96,6 @@ router.put('/:outfitId', verifyToken, upload.single('image'), async (req, res) =
       }
     });
 
-// DELETE /outfits/:outfitId DELETE Route "Protected"
 
 router.delete('/:outfitId', verifyToken, async (req, res) => {
   try {
@@ -116,7 +109,7 @@ router.delete('/:outfitId', verifyToken, async (req, res) => {
       return res.status(403).json({ error: "You're not allowed to delete this outfit" });
     }
 
-    // Check to see if other users have this outfit saved (except for the user that uplaoded it)
+  
     const usersWithThisOutfit = await User.find({
       pinnedOutfits: outfit._id,
       _id: { $ne: req.user._id },
@@ -128,7 +121,7 @@ router.delete('/:outfitId', verifyToken, async (req, res) => {
       });
     }
 
-    // Delete the outfit
+   
     await Comment.deleteMany({ outfitId: outfit._id });
     const deletedOutfit = await Outfit.findByIdAndDelete(req.params.outfitId);
     res.status(200).json(deletedOutfit);
@@ -138,7 +131,6 @@ router.delete('/:outfitId', verifyToken, async (req, res) => {
   }
 });
 
-// POST /outfits/:outfitId/comments CREATE comment "protected"
 router.post('/:outfitId/comments', verifyToken, async (req, res) => {
     try {
         const newComment = await Comment.create({
@@ -160,7 +152,7 @@ router.post('/:outfitId/comments', verifyToken, async (req, res) => {
         }
       });
 
-// PUT /outfits/:outfitId/comments/:commentId UPDATE comment "protected"
+
 router.put('/:outfitId/comments/:commentId', verifyToken, async (req, res) => {
   try {
     const comment = await Comment.findById(req.params.commentId);
@@ -182,7 +174,7 @@ router.put('/:outfitId/comments/:commentId', verifyToken, async (req, res) => {
   }
 });
 
-// DELETE /outfits/:outfitId/comments/:commentId DELETE Comment "protected"
+
 router.delete('/:outfitId/comments/:commentId', verifyToken, async (req,res) => {
   try {
     const comment = await Comment.findById(req.params.commentId);

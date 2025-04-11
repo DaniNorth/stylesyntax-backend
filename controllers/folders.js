@@ -6,7 +6,7 @@ const Folder = require('../models/folder');
 const Outfit = require('../models/outfit');
 const User = require('../models/user');
 
-// GET /folders - all folders for the current user
+
 router.get('/', verifyToken, async (req, res) => {
   try {
     const folders = await Folder.find({ author: req.user._id }).populate('outfits');
@@ -16,7 +16,7 @@ router.get('/', verifyToken, async (req, res) => {
   }
 });
 
-// GET /folders/:id - get a single folder by it's ID
+
 router.get('/:id', verifyToken, async (req, res) => {
   try {
     const folder = await Folder.findById(req.params.id).populate('outfits');
@@ -29,7 +29,7 @@ router.get('/:id', verifyToken, async (req, res) => {
   }
 });
 
-// POST /folders - create new folder
+
 router.post('/', verifyToken, async (req, res) => {
   try {
     const folder = await Folder.create({
@@ -38,7 +38,7 @@ router.post('/', verifyToken, async (req, res) => {
       outfits: [],
     });
 
-    // Also update the user model to have this folder
+  
     await User.findByIdAndUpdate(req.user._id, {
       $push: { folders: folder._id },
     });
@@ -49,7 +49,7 @@ router.post('/', verifyToken, async (req, res) => {
   }
 });
 
-// PATCH /folders/:id - updates the folder title
+
 router.patch('/:id', verifyToken, async (req, res) => {
     try {
       const folder = await Folder.findById(req.params.id);
@@ -67,7 +67,7 @@ router.patch('/:id', verifyToken, async (req, res) => {
     }
   });
 
-// PATCH /folders/:id/add-outfit - add an outfit to a folder
+
 router.patch('/:id/add-outfit', verifyToken, async (req, res) => {
   try {
     const folder = await Folder.findById(req.params.id);
@@ -89,7 +89,7 @@ router.patch('/:id/add-outfit', verifyToken, async (req, res) => {
 });
 
 
-// DELETE /folders/:id - delete the folder
+
 router.delete('/:id', verifyToken, async (req, res) => {
   try {
     const folder = await Folder.findById(req.params.id);

@@ -7,7 +7,6 @@ const QuizResult = require('../models/quizResult');
 const { quizQuestions } = require('../utils/quizQuestions');
 const { quizTagMap } = require('../utils/quizTagMap');
 
-// filter quiz based off the gender that user identifies as
 router.get('/questions', (req, res) => {
   const gender = req.query.gender;
 
@@ -27,7 +26,6 @@ router.get('/questions', (req, res) => {
   res.json({ questions: filteredQuestions });
 });
 
-// score the quiz results
 function calculateQuizResult(userAnswers) {
   const result = {
     genderCategory: null,
@@ -65,7 +63,6 @@ function calculateQuizResult(userAnswers) {
   };
 }
 
-// submit and save the results to user
 router.post('/submit', verifyToken, async (req, res) => {
   try {
     const userId = req.user._id;
