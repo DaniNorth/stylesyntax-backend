@@ -14,6 +14,8 @@ const usersRouter = require('./controllers/users');
 const outfitsRouter = require('./controllers/outfits');
 const foldersRouter = require('./controllers/folders');
 const quizRouter = require('./controllers/quiz');
+const allowedOrigins = ['http://localhost:5173', 'https://stylesyntax.netlify.app'];
+
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI);
@@ -24,8 +26,14 @@ mongoose.connection.on('connected', () => {
 
 // Middleware
 app.use(cors({
-  origin: 'https://stylesyntax.netlify.app/',
-  credentials: true, 
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
 }));
 app.use(express.json());
 app.use(logger('dev'));
