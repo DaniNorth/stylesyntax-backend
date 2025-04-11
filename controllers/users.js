@@ -139,4 +139,15 @@ router.put('/:userId', verifyToken, async (req, res) => {
   };
 });
 
+// DELETE /user/:userId DELETE Route "Protected"
+router.delete('/:userId', verifyToken, async (req, res) => {
+  try {
+    const deletedUser = await User.findByIdAndDelete(req.params.userId);
+    res.status(200).json(deletedUser);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ err: err.message });
+  }
+});
+
 module.exports = router;
