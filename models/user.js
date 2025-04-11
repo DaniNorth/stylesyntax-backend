@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema({
   },
   quizResults: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'QuizResults'
+    ref: 'QuizResult'
   }],  
   
   isAdmin: {

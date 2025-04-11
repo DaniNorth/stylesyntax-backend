@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const QuizResult = require('../models/quizResult');
 const User = require('../models/user');
 
 const verifyToken = require('../middleware/verify-token');
@@ -21,6 +21,7 @@ router.get('/:userId', verifyToken, async (req, res) => {
   try {
     
       const user = await User.findById(req.params.userId)
+      .populate('quizResults')
       .populate('followers', 'username profileImg')
       .populate('following', 'username profileImg')
       .populate('pinnedOutfits')
