@@ -17,7 +17,7 @@ const outfitSchema = new mongoose.Schema({
 
   styleProfile: {
     type: String,
-    enum: ['Boho', 'Minimalist', 'Grunge/edgy', 'Preppy', 'Streetwear', 'Classic', 'Casual', 'Retro', 'Coder', 'Avant-Garde', 'Eclectic/Artsy', 'Chic', 'Other'],
+    enum: ['Boho', 'Minimalist', 'Grunge/edgy', 'Preppy', 'Streetwear', 'Classic', 'Casual', 'Retro', 'Coder', 'Avant-Garde', 'Y2K', 'Eclectic/Artsy', 'Chic', 'Other'],
   },
 
   lifestyleTags: [{
