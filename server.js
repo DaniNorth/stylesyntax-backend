@@ -14,6 +14,7 @@ const usersRouter = require('./controllers/users');
 const outfitsRouter = require('./controllers/outfits');
 const foldersRouter = require('./controllers/folders');
 const quizRouter = require('./controllers/quiz');
+const aiAgentRouter = require('./controllers/aiAgent');
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI);
@@ -35,6 +36,7 @@ app.use('/outfits', outfitsRouter);
 app.use('/uploads', express.static('uploads'));
 app.use('/folders', foldersRouter);
 app.use('/quiz', quizRouter);
+app.use('/aiAgent', aiAgentRouter);
 
 // Start the server and listen on port 3000
 const PORT = process.env.PORT || 3000;
