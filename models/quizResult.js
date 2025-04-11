@@ -1,14 +1,11 @@
-// models/quizResults.js
-// Stores quiz results for each user (referenced in the User model)
 const mongoose = require('mongoose');
-
 
 const quizResultSchema = new mongoose.Schema({
   user: {
-    type: mongoose.Schema.Types.ObjectId, // Links to User
+    type: mongoose.Schema.Types.ObjectId, 
     ref: 'User',
     required: true,
-    unique: true // One quiz result per user
+    unique: true 
   },
 
   genderCategory: {

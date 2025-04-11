@@ -22,7 +22,6 @@ router.post('/sign-up', async (req, res) => {
       hashedPassword: bcrypt.hashSync(req.body.password, saltRounds)
     });
     
-    {/* gives every user a default folder that's called saved outfits */}
     const savedFolder = await Folder.create({
       title: 'Saved Outfits',
       author: user._id,
